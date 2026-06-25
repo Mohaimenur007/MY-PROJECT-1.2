@@ -1,10 +1,5 @@
 # Customer Churn Prediction + Business Insights
 
-> **End-to-end ML project demonstrating the full analyst → data scientist stack**  
-> Roles targeted: Machine Learning Engineer · Data Analyst · BI Engineer · Business Analyst · Data Science Engineer
-
----
-
 ## Project Snapshot
 
 | Item | Value |
@@ -180,21 +175,3 @@ customer-churn-prediction/
 ├── requirements.txt
 └── README.md
 ```
-
----
-
-## Skills Demonstrated
-
-| Domain | Specifics |
-|---|---|
-| **Machine Learning** | Feature engineering, SMOTE for class imbalance, cross-validation, 4-model comparison, XGBoost / Gradient Boosting, scikit-learn pipelines |
-| **Data Analysis** | Churn segmentation, cohort analysis, tenure curves, revenue impact quantification |
-| **SQL / BI** | CTEs, window functions (NTILE, PERCENT_RANK, ROW_NUMBER), aggregate analysis, monitoring views |
-| **Business Intelligence** | Interactive 4-tab dashboard, Chart.js visualizations, filterable risk table, KPI cards |
-| **Business Analysis** | Revenue at risk modeling, ROI estimation, prioritized retention strategy, executive recommendations |
-| **Data Engineering** | Reproducible synthetic data generation, deterministic labeling, pipeline design |
-
----
-
-*Dataset is synthetic — generated with deterministic business rules for portfolio demonstration.*  
-*All customer IDs, charges, and behavior patterns are simulated.*
