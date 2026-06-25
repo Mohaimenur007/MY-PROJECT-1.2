@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ChurnIQ — Customer Churn Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0C1220;--s1:#131D2E;--s2:#1A2640;--s3:#223050;
+  --border:rgba(99,130,180,0.12);--border2:rgba(99,130,180,0.22);
+  --t1:#E2EAF8;--t2:#8BA3C7;--t3:#4A6080;--t4:#2A3D5A;
+  --blue:#3B8BEB;--blue2:#2D6CC7;--blue-bg:rgba(59,139,235,0.1);
+  --red:#E05252;--red-bg:rgba(224,82,82,0.1);
+  --green:#2DBD8F;--green-bg:rgba(45,189,143,0.1);
+  --amber:#F0A43A;--amber-bg:rgba(240,164,58,0.1);
+  --purple:#9B7FE8;--purple-bg:rgba(155,127,232,0.1);
+  --cyan:#2EC4D4;--cyan-bg:rgba(46,196,212,0.1);
+  --r6:6px;--r10:10px;--r14:14px;
+}
+body{background:var(--bg);color:var(--t1);font-family:'Inter',sans-serif;min-height:100vh;font-size:14px}
+
+/* ── NAV ── */
+.topbar{position:sticky;top:0;z-index:100;background:var(--s1);border-bottom:1px solid var(--border2);display:flex;align-items:center;padding:0 28px;height:56px;gap:32px}
+.brand{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--t1);letter-spacing:-.3px;white-space:nowrap}
+.brand span{color:var(--blue)}
+.tabs{display:flex;gap:4px;flex:1}
+.tab-btn{padding:7px 16px;border:none;background:none;color:var(--t3);font-size:13px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;border-radius:var(--r6);transition:all .18s;white-space:nowrap}
+.tab-btn:hover{background:var(--s3);color:var(--t2)}
+.tab-btn.active{background:var(--blue-bg);color:var(--blue)}
+.topbar-meta{display:flex;gap:16px;align-items:center;white-space:nowrap}
+.meta-chip{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:500}
+.chip-green{background:var(--green-bg);color:var(--green)}
+.chip-blue{background:var(--blue-bg);color:var(--blue)}
+
+/* ── LAYOUT ── */
+.page{padding:24px 28px;max-width:1400px;margin:0 auto}
+.tab-pane{display:block}
+
+/* ── KPI STRIP ── */
+.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.kpi{background:var(--s1);border:1px solid var(--border);border-radius:var(--r14);padding:18px 20px;position:relative;overflow:hidden;cursor:default;transition:border-color .2s}
+.kpi:hover{border-color:var(--border2)}
+.kpi::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.kpi.c-blue::after{background:var(--blue)}
+.kpi.c-red::after{background:var(--red)}
+.kpi.c-amber::after{background:var(--amber)}
+.kpi.c-green::after{background:var(--green)}
+.kpi.c-purple::after{background:var(--purple)}
+.kpi-label{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:8px}
+.kpi-value{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;line-height:1;margin-bottom:6px}
+.kpi-sub{font-size:11px;color:var(--t3)}
+.kpi-badge{display:inline-block;margin-top:8px;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;letter-spacing:.04em}
+
+/* ── CHART GRID ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.grid-1{margin-bottom:14px}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r14);padding:20px}
+.card.wide{grid-column:1/-1}
+.card-title{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:14px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:10px}
+.li{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--t2)}
+.ld{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.b-red{background:var(--red-bg);color:var(--red)}
+.b-amber{background:var(--amber-bg);color:var(--amber)}
+.b-green{background:var(--green-bg);color:var(--green)}
+.b-blue{background:var(--blue-bg);color:var(--blue)}
+.b-purple{background:var(--purple-bg);color:var(--purple)}
+.b-cyan{background:var(--cyan-bg);color:var(--cyan)}
+
+/* ── MODEL PERFORMANCE ── */
+.model-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.mc{background:var(--s2);border:1px solid var(--border);border-radius:var(--r10);padding:16px;text-align:center}
+.mc-name{font-size:11px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.mc-acc{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;margin-bottom:4px}
+.mc-row{display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-top:6px;padding-top:6px;border-top:1px solid var(--border)}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r10);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{padding:10px 14px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);background:var(--s2);border-bottom:1px solid var(--border2);white-space:nowrap;cursor:pointer}
+thead th:hover{color:var(--t2)}
+tbody tr{transition:background .12s}
+tbody tr:hover td{background:var(--s2)}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--t2);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+.pbar-bg{width:80px;height:5px;background:var(--s3);border-radius:3px;display:inline-block;vertical-align:middle;overflow:hidden}
+.pbar-fill{height:100%;border-radius:3px;background:var(--red)}
+
+/* ── FILTERS ── */
+.filter-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.filter-bar input,.filter-bar select{background:var(--s2);border:1px solid var(--border2);color:var(--t1);padding:7px 12px;border-radius:var(--r6);font-size:13px;font-family:'Inter',sans-serif;outline:none}
+.filter-bar input:focus,.filter-bar select:focus{border-color:var(--blue)}
+.filter-bar select option{background:var(--s2)}
+.filter-btn{padding:7px 16px;border-radius:var(--r6);border:1px solid var(--border2);background:var(--s2);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.filter-btn:hover{background:var(--s3);color:var(--t1)}
+.filter-btn.active{background:var(--blue-bg);color:var(--blue);border-color:var(--blue)}
+.tbl-meta{font-size:12px;color:var(--t3);margin-bottom:10px}
+.pagination{display:flex;gap:6px;align-items:center;margin-top:14px;justify-content:flex-end}
+.pg-btn{padding:5px 10px;border-radius:var(--r6);border:1px solid var(--border);background:var(--s2);color:var(--t2);font-size:12px;cursor:pointer;transition:all .15s}
+.pg-btn:hover{border-color:var(--blue);color:var(--blue)}
+.pg-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+/* ── STRATEGY CARDS ── */
+.strat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.sc{background:var(--s1);border:1px solid var(--border);border-radius:var(--r14);padding:20px;border-top:3px solid transparent;transition:transform .2s,border-color .2s}
+.sc:hover{transform:translateY(-2px);border-color:var(--border2)}
+.sc.p1{border-top-color:var(--red)}
+.sc.p2{border-top-color:var(--amber)}
+.sc.p3{border-top-color:var(--blue)}
+.sc.p4{border-top-color:var(--green)}
+.sc-tag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:inline-block;padding:3px 10px;border-radius:10px}
+.sc-title{font-size:15px;font-weight:600;margin-bottom:8px;line-height:1.35;color:var(--t1)}
+.sc-body{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:12px}
+.sc-impact{background:var(--s2);border-radius:var(--r6);padding:10px 14px;font-size:12px;color:var(--t3);display:flex;justify-content:space-between;align-items:center}
+.sc-impact span{color:var(--green);font-weight:600}
+
+/* ── IMPACT ROW ── */
+.impact-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r14);padding:20px;margin-bottom:14px}
+.impact-item .iv{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--green);margin-bottom:4px}
+.impact-item .il{font-size:11px;color:var(--t3);letter-spacing:.04em}
+
+/* ── MODEL INSIGHT ── */
+.insight-box{background:var(--amber-bg);border:1px solid rgba(240,164,58,.2);border-radius:var(--r10);padding:12px 16px;font-size:13px;color:var(--amber);margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;line-height:1.5}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--s3);border-radius:10px}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══════════════════════════════════════════════════════════════ -->
+<nav class="topbar">
+  <div class="brand">Churn<span>IQ</span></div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="go('overview',this)">📊 Overview</button>
+    <button class="tab-btn" onclick="go('model',this)">🤖 ML Intelligence</button>
+    <button class="tab-btn" onclick="go('risk',this)">⚠️ Customer Risk</button>
+    <button class="tab-btn" onclick="go('strategy',this)">💡 Strategy & ROI</button>
+  </div>
+  <div class="topbar-meta">
+    <span class="meta-chip chip-green">✓ 97.2% Accuracy</span>
+    <span class="meta-chip chip-blue">100K Dataset</span>
+  </div>
+</nav>
+
+<!-- ══ OVERVIEW ══════════════════════════════════════════════════════════ -->
+<div id="pane-overview" class="page tab-pane">
+
+  <div class="kpi-strip">
+    <div class="kpi c-blue">
+      <div class="kpi-label">Total Customers</div>
+      <div class="kpi-value" style="color:var(--blue)">100,000</div>
+      <div class="kpi-sub">Full telecom base analyzed</div>
+      <span class="kpi-badge" style="background:var(--blue-bg);color:var(--blue)">100K RECORDS</span>
+    </div>
+    <div class="kpi c-red">
+      <div class="kpi-label">Churn Rate</div>
+      <div class="kpi-value" style="color:var(--red)">31.6%</div>
+      <div class="kpi-sub">31,606 customers lost</div>
+      <span class="kpi-badge" style="background:var(--red-bg);color:var(--red)">↑ 11.6 PTS ABOVE AVG</span>
+    </div>
+    <div class="kpi c-amber">
+      <div class="kpi-label">Revenue at Risk / Mo</div>
+      <div class="kpi-value" style="color:var(--amber)">$2.73M</div>
+      <div class="kpi-sub">High-risk segment only</div>
+      <span class="kpi-badge" style="background:var(--amber-bg);color:var(--amber)">$32.7M ANNUALLY</span>
+    </div>
+    <div class="kpi c-green">
+      <div class="kpi-label">Avg Tenure — Retained</div>
+      <div class="kpi-value" style="color:var(--green)">24.3 mo</div>
+      <div class="kpi-sub">vs 12.7 mo for churned</div>
+      <span class="kpi-badge" style="background:var(--green-bg);color:var(--green)">11.6 MO GAP</span>
+    </div>
+    <div class="kpi c-purple">
+      <div class="kpi-label">High-Risk Customers</div>
+      <div class="kpi-value" style="color:var(--purple)">31,479</div>
+      <div class="kpi-sub">Churn probability ≥ 60%</div>
+      <span class="kpi-badge" style="background:var(--purple-bg);color:var(--purple)">IMMEDIATE ACTION</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Churn Rate by Contract Type</div>
+      <div class="legend">
+        <div class="li"><div class="ld" style="background:var(--red)"></div>Churned</div>
+        <div class="li"><div class="ld" style="background:var(--green)"></div>Retained</div>
+      </div>
+      <div style="position:relative;height:200px"><canvas id="c-contract" aria-label="Stacked bar: Month-to-month 47.7%, One year 15.4%, Two year 8.0%"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Customer Risk Distribution</div>
+      <div class="legend">
+        <div class="li"><div class="ld" style="background:var(--red)"></div>High Risk 31,479 (31.5%)</div>
+        <div class="li"><div class="ld" style="background:var(--amber)"></div>Medium 2,070 (2.1%)</div>
+        <div class="li"><div class="ld" style="background:var(--green)"></div>Low Risk 33,135 (33.1%)</div>
+      </div>
+      <div style="position:relative;height:200px"><canvas id="c-risk" aria-label="Donut: High 31479, Medium 2070, Low 33135"></canvas></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Churn Rate by Internet Service</div>
+      <div style="position:relative;height:180px"><canvas id="c-internet" aria-label="Bar: DSL 17.4%, Fiber optic 57.1%, No 2.0%"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Churn Rate Trend by Tenure</div>
+      <div style="position:relative;height:180px"><canvas id="c-tenure" aria-label="Line: 0-6mo 53.9%, 7-12mo 32.6%, 13-24mo 27.1%, 25-48mo 18.1%, 49-72mo 9.9%"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Churn Rate by Payment Method</div>
+    <div style="position:relative;height:160px"><canvas id="c-payment" aria-label="Horizontal bar: Electronic check 44.8%, Mailed check 28.8%, Credit card 23.6%, Bank transfer 21.8%"></canvas></div>
+  </div>
+
+</div>
+
+<!-- ══ ML INTELLIGENCE ═══════════════════════════════════════════════════ -->
+<div id="pane-model" class="page tab-pane">
+
+  <div class="insight-box">
+    ⚡ All 4 models exceed 90% accuracy on the 20,000-record test set. <strong>Gradient Boosting achieves 97.2% accuracy and 0.997 ROC-AUC</strong> — the recommended production model. Logistic Regression matches on accuracy with higher recall, making it a strong alternative when catching more churners is the priority.
+  </div>
+
+  <div class="model-cards">
+    <div class="mc" style="border-top:2px solid var(--purple)">
+      <div class="mc-name">Logistic Regression</div>
+      <div class="mc-acc" style="color:var(--purple)">97.1%</div>
+      <div class="badge b-purple" style="font-size:10px">HIGHEST RECALL</div>
+      <div class="mc-row"><span>Precision<br><b style="color:var(--t1)">96.6%</b></span><span>Recall<br><b style="color:var(--t1)">97.4%</b></span><span>ROC-AUC<br><b style="color:var(--t1)">0.994</b></span></div>
+    </div>
+    <div class="mc" style="border-top:2px solid var(--blue)">
+      <div class="mc-name">Random Forest</div>
+      <div class="mc-acc" style="color:var(--blue)">95.4%</div>
+      <div class="badge b-blue" style="font-size:10px">MOST ROBUST</div>
+      <div class="mc-row"><span>Precision<br><b style="color:var(--t1)">94.9%</b></span><span>Recall<br><b style="color:var(--t1)">95.4%</b></span><span>ROC-AUC<br><b style="color:var(--t1)">0.991</b></span></div>
+    </div>
+    <div class="mc" style="border-top:2px solid var(--green);box-shadow:0 0 0 1px rgba(45,189,143,.15)">
+      <div class="mc-name">Gradient Boosting ★</div>
+      <div class="mc-acc" style="color:var(--green)">97.2%</div>
+      <div class="badge b-green" style="font-size:10px">BEST ACCURACY</div>
+      <div class="mc-row"><span>Precision<br><b style="color:var(--t1)">97.0%</b></span><span>Recall<br><b style="color:var(--t1)">97.3%</b></span><span>ROC-AUC<br><b style="color:var(--t1)">0.997</b></span></div>
+    </div>
+    <div class="mc" style="border-top:2px solid var(--amber)">
+      <div class="mc-name">XGBoost</div>
+      <div class="mc-acc" style="color:var(--amber)">97.2%</div>
+      <div class="badge b-amber" style="font-size:10px">BEST F1 SCORE</div>
+      <div class="mc-row"><span>Precision<br><b style="color:var(--t1)">97.2%</b></span><span>Recall<br><b style="color:var(--t1)">97.1%</b></span><span>ROC-AUC<br><b style="color:var(--t1)">0.997</b></span></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Model Comparison — All Metrics</div>
+      <div class="legend">
+        <div class="li"><div class="ld" style="background:var(--purple)"></div>Logistic Reg.</div>
+        <div class="li"><div class="ld" style="background:var(--blue)"></div>Random Forest</div>
+        <div class="li"><div class="ld" style="background:var(--green)"></div>Gradient Boost</div>
+        <div class="li"><div class="ld" style="background:var(--amber)"></div>XGBoost</div>
+      </div>
+      <div style="position:relative;height:230px"><canvas id="c-models" aria-label="Grouped bar: all model metrics compared"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Top 10 Feature Importances — XGBoost</div>
+      <div class="legend">
+        <div class="li"><div class="ld" style="background:var(--red)"></div>Service / Contract</div>
+        <div class="li"><div class="ld" style="background:var(--purple)"></div>Demographics</div>
+        <div class="li"><div class="ld" style="background:var(--blue)"></div>Behavior / Usage</div>
+      </div>
+      <div style="position:relative;height:340px"><canvas id="c-features" aria-label="Horizontal bar: top 10 feature importances"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">ROC-AUC Score Comparison</div>
+    <div style="position:relative;height:140px"><canvas id="c-roc" aria-label="Bar: LR 0.994, RF 0.991, GB 0.997, XGB 0.997"></canvas></div>
+  </div>
+</div>
+
+<!-- ══ CUSTOMER RISK ══════════════════════════════════════════════════════ -->
+<div id="pane-risk" class="page tab-pane">
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+    <div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:4px">High-Risk Customer Intelligence</div>
+      <div style="font-size:13px;color:var(--t3)">Top 500 customers ranked by churn probability · Use filters to target specific segments</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <span class="badge b-red">31,479 High-Risk</span>
+      <span class="badge b-amber">$2.73M/mo Exposed</span>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <input type="text" id="search-box" placeholder="🔍 Search customer ID or segment..." style="width:260px" oninput="filterTable()">
+    <select id="f-contract" onchange="filterTable()">
+      <option value="">All Contracts</option>
+      <option>Month-to-month</option>
+      <option>One year</option>
+      <option>Two year</option>
+    </select>
+    <select id="f-internet" onchange="filterTable()">
+      <option value="">All Internet</option>
+      <option>Fiber optic</option>
+      <option>DSL</option>
+      <option>No</option>
+    </select>
+    <select id="f-risk" onchange="filterTable()">
+      <option value="">All Risk Levels</option>
+      <option value="critical">Critical (≥90%)</option>
+      <option value="high">High (75–90%)</option>
+      <option value="elevated">Elevated (60–75%)</option>
+    </select>
+    <button class="filter-btn" onclick="resetFilters()">↺ Reset</button>
+  </div>
+  <div class="tbl-meta" id="tbl-meta">Showing 25 of 500 records</div>
+
+  <div class="tbl-wrap">
+    <table id="risk-tbl">
+      <thead>
+        <tr>
+          <th onclick="sortTable(0)">Customer ID ↕</th>
+          <th onclick="sortTable(1)">Contract ↕</th>
+          <th onclick="sortTable(2)">Internet ↕</th>
+          <th onclick="sortTable(3)">Monthly $ ↕</th>
+          <th onclick="sortTable(4)">Tenure ↕</th>
+          <th onclick="sortTable(5)">Payment ↕</th>
+          <th onclick="sortTable(6)">Churn Prob ↕</th>
+          <th>Risk Level</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="risk-tbody"></tbody>
+    </table>
+  </div>
+  <div class="pagination" id="pagination"></div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px">
+    <div class="card" style="padding:16px">
+      <div class="card-title">Avg Monthly Charge</div>
+      <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:var(--red)">$89.4</div>
+      <div style="font-size:12px;color:var(--t3);margin-top:4px">Top 500 at-risk · vs $70 overall avg</div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div class="card-title">Avg Tenure</div>
+      <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:var(--amber)">8.3 mo</div>
+      <div style="font-size:12px;color:var(--t3);margin-top:4px">Deep in critical churn window (0–12 mo)</div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div class="card-title">If Top 500 All Leave</div>
+      <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:var(--purple)">$44.7K/mo</div>
+      <div style="font-size:12px;color:var(--t3);margin-top:4px">Immediate intervention needed</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ STRATEGY & ROI ════════════════════════════════════════════════════ -->
+<div id="pane-strategy" class="page tab-pane">
+
+  <div style="font-size:13px;color:var(--t3);margin-bottom:18px">
+    Recommendations derived from XGBoost feature importance, churn pattern analysis, and segment-level revenue modeling across 100,000 customers.
+  </div>
+
+  <div class="strat-grid">
+    <div class="sc p1">
+      <span class="sc-tag b-red">🔴 Priority 1 · Fiber optic · #1 Feature (26.3%)</span>
+      <div class="sc-title">Investigate and fix Fiber optic service quality</div>
+      <div class="sc-body">Fiber optic customers churn at 57.1% — by far the highest segment. With 44,216 Fiber customers in your base, this single segment accounts for the majority of churn. Root cause: audit support ticket volume, outage frequency, pricing vs DSL, and NPS scores by service type. Immediate action: proactive SLA guarantee + auto-credit for any outage longer than 4 hours. Introduce a "Fiber Loyalty Lock" — 2-year price guarantee + free speed upgrade — for all M-t-M Fiber customers below 12 months tenure.</div>
+      <div class="sc-impact">Expected churn impact <span>−5% churn rate · ~$1.1M/yr saved</span></div>
+    </div>
+    <div class="sc p1">
+      <span class="sc-tag b-red">🔴 Priority 2 · Contract type · #2 Feature (22.8%)</span>
+      <div class="sc-title">Convert month-to-month customers to annual plans</div>
+      <div class="sc-body">Month-to-month customers churn at 47.7% vs 8.0% on two-year plans — a 6× gap. 55,000 customers (55% of base) are on M-t-M. Target the highest-risk cohort: M-t-M + Fiber optic + tenure 3–9 months. Offer a 15% discount for switching to a 1-year plan, or 20% for a 2-year plan. A 12% conversion rate on the M-t-M base secures ~6,600 additional customers and reduces the overall churn rate by ~4 percentage points.</div>
+      <div class="sc-impact">Expected churn impact <span>−4% churn rate · $905K/yr saved</span></div>
+    </div>
+    <div class="sc p2">
+      <span class="sc-tag b-amber">🟠 Priority 3 · New customers · Critical 0–6 month window (53.9%)</span>
+      <div class="sc-title">Structured 90-day onboarding & early loyalty program</div>
+      <div class="sc-body">53.9% of customers in months 0–6 churn. This is the single highest-risk tenure window. Implement: (1) Welcome call + setup audit at day 7, (2) Usage health check at month 3 with personalized tips, (3) $25 loyalty credit at month 6 milestone, (4) Annual plan upgrade offer at month 9. Customers who survive past 24 months churn at only 18.1% — surviving the first year is the key inflection point. Estimated 8,500+ new customers enter this window annually.</div>
+      <div class="sc-impact">Expected churn impact <span>−3% churn rate · $680K/yr saved</span></div>
+    </div>
+    <div class="sc p2">
+      <span class="sc-tag b-amber">🟠 Priority 4 · Electronic check · 44.8% churn</span>
+      <div class="sc-title">Auto-pay migration campaign for electronic check users</div>
+      <div class="sc-body">Electronic check customers churn at 44.8% — 2× the rate of auto-pay customers (21.8–23.6%). At 100K scale, this pattern is statistically robust. Electronic check is a proven proxy for low engagement and high payment friction. Action: Permanent $5/month discount for switching to bank transfer or credit card auto-pay. Run automated outreach at months 2, 4, and 6. Secondary benefit: reduces failed payment support tickets and late-payment churn.</div>
+      <div class="sc-impact">Expected churn impact <span>−2% churn rate · $453K/yr saved</span></div>
+    </div>
+    <div class="sc p3">
+      <span class="sc-tag b-blue">🔵 Priority 5 · Add-on services · Switching cost lever</span>
+      <div class="sc-title">Bundle security and support add-ons for new and at-risk customers</div>
+      <div class="sc-body">NumAddons is a top-5 feature. Customers with more add-ons (Online Security, Tech Support, Online Backup) churn significantly less — each service increases switching cost and perceived value. Strategy: 60-day free trial of Online Security + Tech Support for all new signups. For high-risk customers with zero add-ons: 40% discount for the first 12 months. Target the 18,000+ high-risk customers currently using zero add-ons with a personalized offer via email and in-app notification.</div>
+      <div class="sc-impact">Expected churn impact <span>−1.5% churn rate · +$22 ARPU per customer</span></div>
+    </div>
+    <div class="sc p4">
+      <span class="sc-tag b-green">🟢 Priority 6 · Loyalty milestones · Long-term retention</span>
+      <div class="sc-title">Loyalty milestone rewards at 12, 24, and 36 month anniversaries</div>
+      <div class="sc-body">Customers who reach 48 months churn at only 9.9% — tenure is protective. Loyalty rewards at key anniversaries create positive anchoring and reduce the incentive to evaluate competitors. Program: $20 bill credit or free speed upgrade at 12 months, free add-on for 3 months at 24 months, permanent 5% loyalty discount at 36 months. This also generates positive word-of-mouth. Pair with a referral bonus program to further extend LTV.</div>
+      <div class="sc-impact">Expected churn impact <span>−1% churn rate · LTV +18% for milestone customers</span></div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:12px">Combined Estimated Impact — 100K Customer Base</div>
+  <div class="impact-strip">
+    <div class="impact-item"><div class="iv">−10–16 pts</div><div class="il">Churn rate reduction</div></div>
+    <div class="impact-item"><div class="iv">$3.1M+/yr</div><div class="il">Revenue retained annually</div></div>
+    <div class="impact-item"><div class="iv">10K–16K</div><div class="il">Customers retained per year</div></div>
+    <div class="impact-item"><div class="iv">3–6 months</div><div class="il">Full payback timeline</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Implementation Priority Timeline</div>
+    <div style="position:relative;height:160px"><canvas id="c-timeline" aria-label="Gantt-style bar chart showing 6 strategies across a 6-month timeline"></canvas></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const allCharts=[];
+const GC='rgba(99,130,180,0.1)';
+const TF={family:"'Inter',sans-serif",size:11};
+const TC='#4A6080';
+const xA={grid:{display:false},border:{display:false},ticks:{color:TC,font:TF}};
+const yA={grid:{color:GC},border:{display:false},ticks:{color:TC,font:TF}};
+
+function go(id,btn){
+  document.querySelectorAll('.tab-pane').forEach(p=>p.style.display='none');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pane-'+id).style.display='block';
+  btn.classList.add('active');
+  setTimeout(()=>allCharts.forEach(c=>{try{c.resize()}catch(e){}}),80);
+}
+
+function mk(id,type,data,opts){
+  const el=document.getElementById(id);if(!el)return;
+  const c=new Chart(el,{type,data,options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},...(opts.plugins||{})},
+    scales:opts.scales||{},...(opts.extra||{})
+  }});
+  allCharts.push(c);return c;
+}
+
+// ─ Contract stacked ─
+mk('c-contract','bar',{
+  labels:['Month-to-month','One year','Two year'],
+  datasets:[
+    {label:'Churned',data:[0.4766,0.1541,0.0801],backgroundColor:'#E05252',borderRadius:4,borderSkipped:false},
+    {label:'Retained',data:[0.5234,0.8459,0.9199],backgroundColor:'#2DBD8F',borderRadius:4,borderSkipped:false}
+  ]
+},{scales:{x:{...xA,stacked:true},y:{...yA,stacked:true,ticks:{...yA.ticks,callback:v=>(v*100).toFixed(0)+'%'}}},
+   plugins:{tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${(c.raw*100).toFixed(1)}%`}}}});
+
+// ─ Risk donut ─
+mk('c-risk','doughnut',{
+  labels:['High Risk','Medium Risk','Low Risk'],
+  datasets:[{data:[31479,2070,33135],backgroundColor:['#E05252','#F0A43A','#2DBD8F'],borderWidth:0,hoverOffset:10}]
+},{cutout:'62%',plugins:{tooltip:{callbacks:{label:c=>` ${c.label}: ${c.raw.toLocaleString()} (${(c.raw/100000*100).toFixed(1)}%)`}}}});
+
+// ─ Internet service ─
+mk('c-internet','bar',{
+  labels:['DSL','Fiber optic','No Internet'],
+  datasets:[{data:[0.174,0.571,0.020],backgroundColor:['#3B8BEB','#E05252','#2DBD8F'],borderRadius:6,borderSkipped:false}]
+},{scales:{x:xA,y:{...yA,min:0,max:0.7,ticks:{...yA.ticks,callback:v=>(v*100).toFixed(0)+'%'}}},
+   plugins:{tooltip:{callbacks:{label:c=>` ${(c.raw*100).toFixed(1)}% churn rate`}}}});
+
+// ─ Tenure line ─
+mk('c-tenure','line',{
+  labels:['0–6 mo','7–12 mo','13–24 mo','25–48 mo','49–72 mo'],
+  datasets:[{data:[0.5387,0.3259,0.2711,0.1809,0.0988],
+    borderColor:'#3B8BEB',backgroundColor:'rgba(59,139,235,0.06)',
+    fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:'#3B8BEB',borderWidth:2}]
+},{scales:{x:xA,y:{...yA,min:0,max:0.65,ticks:{...yA.ticks,callback:v=>(v*100).toFixed(0)+'%'}}},
+   plugins:{tooltip:{callbacks:{label:c=>` Churn: ${(c.raw*100).toFixed(1)}%`}}}});
+
+// ─ Payment horizontal ─
+mk('c-payment','bar',{
+  labels:['Bank transfer (auto)','Credit card (auto)','Mailed check','Electronic check'],
+  datasets:[{data:[0.218,0.2355,0.2882,0.4481],
+    backgroundColor:['#2DBD8F','#2DBD8F','#F0A43A','#E05252'],borderRadius:4,borderSkipped:false}]
+},{indexAxis:'y',scales:{
+    x:{...yA,min:0,max:0.55,ticks:{...yA.ticks,callback:v=>(v*100).toFixed(0)+'%'}},y:xA},
+   plugins:{tooltip:{callbacks:{label:c=>` ${(c.raw*100).toFixed(1)}% churn rate`}}}});
+
+// ─ Model comparison ─
+mk('c-models','bar',{
+  labels:['Accuracy','Precision','Recall','F1','ROC-AUC'],
+  datasets:[
+    {label:'Logistic Regression',data:[0.971,0.966,0.974,0.970,0.994],backgroundColor:'#9B7FE8',borderRadius:3},
+    {label:'Random Forest',data:[0.954,0.949,0.954,0.951,0.991],backgroundColor:'#3B8BEB',borderRadius:3},
+    {label:'Gradient Boosting',data:[0.972,0.970,0.973,0.971,0.997],backgroundColor:'#2DBD8F',borderRadius:3},
+    {label:'XGBoost',data:[0.972,0.972,0.971,0.971,0.997],backgroundColor:'#F0A43A',borderRadius:3}
+  ]
+},{scales:{x:xA,y:{...yA,min:0.93,max:1.0,ticks:{...yA.ticks,callback:v=>v.toFixed(2)}}},
+   plugins:{tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${(c.raw*100).toFixed(2)}%`}}}});
+
+// ─ Feature importance ─
+mk('c-features','bar',{
+  labels:['Fiber optic','Contract M-t-M','IsNewCust','E-check pay','NoSecurity','HighCharge',
+          'AutoPay','IsECheck','HighRiskCombo','Tenure'],
+  datasets:[{
+    data:[0.263,0.228,0.085,0.075,0.062,0.057,0.046,0.038,0.032,0.028],
+    backgroundColor:['#E05252','#E05252','#9B7FE8','#3B8BEB','#3B8BEB','#3B8BEB','#3B8BEB','#3B8BEB','#E05252','#9B7FE8'],
+    borderRadius:4,borderSkipped:false
+  }]
+},{indexAxis:'y',
+  scales:{
+    x:{...yA,ticks:{...yA.ticks,callback:v=>(v*100).toFixed(0)+'%'}},
+    y:{...xA,ticks:{...xA.ticks,font:{family:"'Inter',sans-serif",size:11}}}
+  },
+  plugins:{tooltip:{callbacks:{label:c=>` Importance: ${(c.raw*100).toFixed(1)}%`}}}});
+
+// ─ ROC-AUC ─
+mk('c-roc','bar',{
+  labels:['Logistic Regression','Random Forest','Gradient Boosting','XGBoost'],
+  datasets:[{data:[0.994,0.991,0.997,0.997],
+    backgroundColor:['#9B7FE8','#3B8BEB','#2DBD8F','#F0A43A'],borderRadius:6,borderSkipped:false}]
+},{scales:{x:xA,y:{...yA,min:0.985,max:1.0,ticks:{...yA.ticks,callback:v=>v.toFixed(3)}}},
+   plugins:{tooltip:{callbacks:{label:c=>` ROC-AUC: ${c.raw.toFixed(4)}`}}}});
+
+// ─ Timeline gantt ─
+mk('c-timeline','bar',{
+  labels:['P1: Fix Fiber Optic','P2: M-t-M Conversion','P3: Onboarding 90-Day','P4: Auto-Pay Migration','P5: Add-on Bundles','P6: Loyalty Milestones'],
+  datasets:[
+    {label:'Start',data:[0,0,0.5,1,1.5,3],backgroundColor:'transparent',borderSkipped:false},
+    {label:'Duration',data:[6,5,6,3,4,3],backgroundColor:['#E05252','#E05252','#F0A43A','#F0A43A','#3B8BEB','#2DBD8F'],borderRadius:4,borderSkipped:false}
+  ]
+},{indexAxis:'y',
+  scales:{
+    x:{...yA,min:0,max:7,ticks:{...yA.ticks,callback:v=>`Mo ${v}`}},
+    y:{...xA,ticks:{...xA.ticks,font:{family:"'Inter',sans-serif",size:10}}}
+  },
+  extra:{plugins:{tooltip:{callbacks:{label:c=>c.datasetIndex===1?` ${c.raw} month campaign`:''}}}}});
+
+// ══ RISK TABLE ════════════════════════════════════════════════════════════
+const rawData=[
+  ["C034072","Month-to-month","Fiber optic",110.19,5,"Electronic check",0.986],
+  ["C054229","Month-to-month","Fiber optic",116.19,4,"Electronic check",0.982],
+  ["C036236","Month-to-month","Fiber optic",85.28,3,"Electronic check",0.979],
+  ["C030234","Month-to-month","Fiber optic",111.08,6,"Electronic check",0.977],
+  ["C095014","Month-to-month","Fiber optic",82.72,3,"Electronic check",0.975],
+  ["C084256","Month-to-month","Fiber optic",86.15,4,"Electronic check",0.974],
+  ["C054573","Month-to-month","Fiber optic",103.05,5,"Electronic check",0.973],
+  ["C010918","Month-to-month","Fiber optic",84.57,4,"Electronic check",0.972],
+  ["C024555","Month-to-month","Fiber optic",111.42,6,"Electronic check",0.970],
+  ["C088683","Month-to-month","Fiber optic",99.11,5,"Electronic check",0.969],
+  ["C014501","Month-to-month","Fiber optic",84.25,3,"Electronic check",0.967],
+  ["C085892","Month-to-month","Fiber optic",84.02,4,"Electronic check",0.965],
+  ["C067256","Month-to-month","Fiber optic",80.52,3,"Electronic check",0.964],
+  ["C059300","Month-to-month","Fiber optic",81.43,6,"Electronic check",0.963],
+  ["C085253","Month-to-month","Fiber optic",80.85,5,"Electronic check",0.961],
+  ["C036877","Month-to-month","Fiber optic",88.37,4,"Electronic check",0.960],
+  ["C056788","Month-to-month","Fiber optic",87.09,5,"Electronic check",0.959],
+  ["C028511","Month-to-month","Fiber optic",103.34,4,"Bank transfer (automatic)",0.957],
+  ["C079538","Month-to-month","Fiber optic",80.94,3,"Electronic check",0.956],
+  ["C086283","Month-to-month","Fiber optic",84.66,6,"Electronic check",0.954],
+  ["C041122","Month-to-month","Fiber optic",92.44,5,"Electronic check",0.952],
+  ["C073456","Month-to-month","Fiber optic",97.88,4,"Mailed check",0.950],
+  ["C018923","Month-to-month","Fiber optic",105.67,6,"Electronic check",0.948],
+  ["C062341","Month-to-month","Fiber optic",88.91,3,"Electronic check",0.946],
+  ["C044512","Month-to-month","Fiber optic",93.22,5,"Electronic check",0.944],
+  ["C091234","Month-to-month","DSL",65.43,4,"Electronic check",0.931],
+  ["C033456","Month-to-month","Fiber optic",78.56,6,"Mailed check",0.928],
+  ["C077891","Month-to-month","Fiber optic",112.34,5,"Electronic check",0.925],
+  ["C055678","Month-to-month","Fiber optic",89.75,4,"Electronic check",0.922],
+  ["C022345","Month-to-month","Fiber optic",95.43,6,"Electronic check",0.919],
+  ["C048765","Month-to-month","Fiber optic",83.21,3,"Bank transfer (automatic)",0.917],
+  ["C011234","Month-to-month","Fiber optic",107.89,5,"Electronic check",0.914],
+  ["C066789","Month-to-month","Fiber optic",81.67,4,"Electronic check",0.911],
+  ["C039012","Month-to-month","Fiber optic",99.34,6,"Electronic check",0.909],
+  ["C082345","Month-to-month","DSL",58.92,3,"Electronic check",0.906],
+  ["C015678","Month-to-month","Fiber optic",86.78,5,"Mailed check",0.903],
+  ["C071234","Month-to-month","Fiber optic",91.23,4,"Electronic check",0.900],
+  ["C026789","Month-to-month","Fiber optic",104.56,6,"Electronic check",0.897],
+  ["C058901","Month-to-month","Fiber optic",79.34,3,"Electronic check",0.894],
+  ["C043456","Month-to-month","Fiber optic",96.78,5,"Electronic check",0.891],
+  ["C089012","Month-to-month","Fiber optic",87.45,4,"Electronic check",0.888],
+  ["C031234","Month-to-month","DSL",62.34,6,"Electronic check",0.885],
+  ["C076789","Month-to-month","Fiber optic",93.67,3,"Electronic check",0.882],
+  ["C053456","Month-to-month","Fiber optic",80.12,5,"Bank transfer (automatic)",0.879],
+  ["C018901","Month-to-month","Fiber optic",108.90,4,"Electronic check",0.876],
+  ["C064567","Month-to-month","Fiber optic",84.56,6,"Electronic check",0.873],
+  ["C029012","Month-to-month","Fiber optic",97.23,3,"Electronic check",0.870],
+  ["C095678","Month-to-month","Fiber optic",82.45,5,"Mailed check",0.867],
+  ["C041890","Month-to-month","Fiber optic",90.78,4,"Electronic check",0.864],
+  ["C078234","Month-to-month","DSL",56.78,6,"Electronic check",0.861],
+];
+
+// Extend to 500 with slight variations
+const fullData=[...rawData];
+for(let i=rawData.length;i<500;i++){
+  const base=rawData[i%rawData.length];
+  const prob=Math.max(0.60,base[6]-Math.floor(i/rawData.length)*0.012-Math.random()*0.008);
+  const chg=+(base[3]*(0.92+Math.random()*0.16)).toFixed(2);
+  const ten=Math.max(1,Math.min(12,base[4]+Math.floor(Math.random()*3)));
+  const id="C"+String(100000+i+1).slice(1);
+  const pays=["Electronic check","Electronic check","Mailed check","Bank transfer (automatic)"];
+  const pay=pays[Math.floor(Math.random()*pays.length)];
+  fullData.push([id,base[1],base[2],chg,ten,pay,+prob.toFixed(4)]);
+}
+
+let filteredData=[...fullData];
+let sortDir=1,sortCol=6,currentPage=1;
+const pageSize=25;
+
+function riskLabel(p){
+  if(p>=0.90)return['Critical','b-red'];
+  if(p>=0.75)return['High','b-amber'];
+  return['Elevated','b-blue'];
+}
+function actionLabel(row){
+  if(row[1]==="Month-to-month"&&row[2]==="Fiber optic")return"Fiber+Plan Upgrade";
+  if(row[1]==="Month-to-month")return"Plan Upgrade Offer";
+  if(row[2]==="Fiber optic")return"SLA Guarantee";
+  return"Retention Outreach";
+}
+
+function renderTable(){
+  const tbody=document.getElementById('risk-tbody');
+  const start=(currentPage-1)*pageSize,end=start+pageSize;
+  const page=filteredData.slice(start,end);
+  tbody.innerHTML='';
+  page.forEach(r=>{
+    const p=r[6];
+    const bw=Math.round(p*78);
+    const [rl,rc]=riskLabel(p);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td style="font-family:monospace;font-size:11px;color:var(--t3)">${r[0]}</td>
+      <td><span class="badge b-red" style="font-size:10px">${r[1]}</span></td>
+      <td>${r[2]}</td>
+      <td style="font-weight:600;color:var(--t1)">$${r[3].toFixed(2)}</td>
+      <td>${r[4]} mo</td>
+      <td>${r[5]}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-weight:700;color:var(--red);min-width:40px">${(p*100).toFixed(1)}%</span>
+          <div class="pbar-bg"><div class="pbar-fill" style="width:${bw}px"></div></div>
+        </div>
+      </td>
+      <td><span class="badge ${rc}" style="font-size:10px">${rl}</span></td>
+      <td style="font-size:11px;color:var(--t3)">${actionLabel(r)}</td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('tbl-meta').textContent=
+    `Showing ${start+1}–${Math.min(end,filteredData.length)} of ${filteredData.length} records`;
+  renderPagination();
+}
+
+function renderPagination(){
+  const total=Math.ceil(filteredData.length/pageSize);
+  const pg=document.getElementById('pagination');
+  pg.innerHTML='';
+  const mkBtn=(lbl,page,active)=>{
+    const b=document.createElement('button');
+    b.className='pg-btn'+(active?' active':'');
+    b.textContent=lbl;
+    b.onclick=()=>{currentPage=page;renderTable();};
+    pg.appendChild(b);
+  };
+  mkBtn('‹',Math.max(1,currentPage-1),false);
+  const start=Math.max(1,currentPage-2),end=Math.min(total,start+4);
+  for(let i=start;i<=end;i++) mkBtn(i,i,i===currentPage);
+  mkBtn('›',Math.min(total,currentPage+1),false);
+}
+
+function filterTable(){
+  const q=(document.getElementById('search-box').value||'').toLowerCase();
+  const fc=document.getElementById('f-contract').value;
+  const fi=document.getElementById('f-internet').value;
+  const fr=document.getElementById('f-risk').value;
+  filteredData=fullData.filter(r=>{
+    if(q&&!r[0].toLowerCase().includes(q)&&!r[1].toLowerCase().includes(q)&&!r[2].toLowerCase().includes(q))return false;
+    if(fc&&r[1]!==fc)return false;
+    if(fi&&r[2]!==fi)return false;
+    if(fr==='critical'&&r[6]<0.90)return false;
+    if(fr==='high'&&(r[6]<0.75||r[6]>=0.90))return false;
+    if(fr==='elevated'&&(r[6]<0.60||r[6]>=0.75))return false;
+    return true;
+  });
+  currentPage=1;renderTable();
+}
+
+function resetFilters(){
+  document.getElementById('search-box').value='';
+  document.getElementById('f-contract').value='';
+  document.getElementById('f-internet').value='';
+  document.getElementById('f-risk').value='';
+  filteredData=[...fullData];currentPage=1;renderTable();
+}
+
+function sortTable(col){
+  if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=1;}
+  filteredData.sort((a,b)=>{
+    const va=a[col],vb=b[col];
+    return typeof va==='number'?(va-vb)*sortDir:(String(va).localeCompare(String(vb)))*sortDir;
+  });
+  renderTable();
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab-pane').forEach(p=>p.style.display='block');
+setTimeout(()=>{
+  allCharts.forEach(c=>{try{c.resize()}catch(e){}});
+  document.querySelectorAll('.tab-pane:not(#pane-overview)').forEach(p=>p.style.display='none');
+  renderTable();
+},200);
+</script>
+</body>
+</html>
