@@ -1,5 +1,5 @@
 # MY-PROJECT-1.2
-# Lostly — Lost & Found for Bangladesh (Group 6)
+# Lostly — Lost & Found for Bangladesh
 
 PHP + MySQL (XAMPP), built on a small custom **MVC framework** with a
 **Bootstrap 5** front end. No Composer, no build step: copy the folder and run.
