@@ -18,7 +18,8 @@ Report what you lost or found, get matched automatically, and return items safel
 
 <br>
 
-<img src="docs/screenshots/home.png" alt="Lostly home page" width="100%">
+<img src="![Uploading Screenshot 2026-11-26 at 6.25.21 PM.png…]()
+" alt="Lostly home page" width="100%">
 
 </div>
 
