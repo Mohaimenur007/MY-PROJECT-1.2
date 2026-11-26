@@ -352,7 +352,7 @@ Lostly was built by **Group 6**.
 
 | Name | Role | GitHub |
 |---|---|---|
-| Mohaimenr Rahman | Full-stack development | [@YOUR_USERNAME](https://github.com/YOUR_USERNAME) |
+| Mohaimenur Rahman | Full-stack development | [@YOUR_USERNAME](https://github.com/YOUR_USERNAME) |
 | Jannatul Afrin | — | [@USERNAME](https://github.com/USERNAME) |
 | TEAM_MEMBER | — | [@USERNAME](https://github.com/USERNAME) |
 
