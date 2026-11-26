@@ -18,7 +18,7 @@ Report what you lost or found, get matched automatically, and return items safel
 
 <br>
 
-<img src="![Uploading Screenshot 2026-11-26 at 6.25.21 PM.png…]()
+<img src="![Uploading Screenshot 2026-11-26 at 6.25.21 PM.png]()
 " alt="Lostly home page" width="100%">
 
 </div>
@@ -93,7 +93,8 @@ When something goes missing in Bangladesh, the owner and the finder usually have
 
 | Home | Browse |
 |:---:|:---:|
-| <img src="docs/screenshots/home.png" alt="Home page" width="100%"> | <img src="docs/screenshots/browse.png" alt="Browse reports" width="100%"> |
+| <img src="![Uploading Screenshot 2026-11-26 at 6.25.21 PM.png]()
+" alt="Home page" width="100%"> | <img src="docs/screenshots/browse.png" alt="Browse reports" width="100%"> |
 | **Report page** | **Dashboard** |
 | <img src="docs/screenshots/report.png" alt="Report page" width="100%"> | <img src="docs/screenshots/dashboard.png" alt="Dashboard" width="100%"> |
 | **Private messaging** | **New report** |
