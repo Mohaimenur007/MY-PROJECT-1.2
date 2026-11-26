@@ -1,0 +1,44 @@
+/* ---------- extras: footer note, printable poster ---------- */
+
+.footer-note { color: var(--muted); font-size: 0.85rem; }
+
+/* poster view: no site chrome, just the sheet */
+body.poster-mode { background: #e9e4d8; }
+body.poster-mode .lostly-nav,
+body.poster-mode .site-footer,
+body.poster-mode #announce-bar { display: none !important; }
+
+.poster-page { padding: 24px; color: #15130f; font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif; }
+.poster-page .toolbar { max-width: 210mm; margin: 0 auto 16px; display: flex; gap: 10px; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+.poster-page .toolbar a { color: #15130f; font-weight: 700; }
+.poster-page .toolbar button { font: inherit; font-weight: 700; padding: 10px 20px; background: #15130f; color: #fff; border: 0; border-radius: 10px; cursor: pointer; }
+.poster-sheet { max-width: 210mm; min-height: 280mm; margin: 0 auto; padding: 14mm; background: #fff; border: 3px solid #15130f; display: flex; flex-direction: column; text-align: center; }
+.poster-sheet .banner { font-size: 30mm; font-weight: 900; letter-spacing: 0.04em; line-height: 1; padding: 6mm 0; color: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.poster-sheet .banner.is-lost { background: #e0321a; }
+.poster-sheet .banner.is-found { background: #108a50; }
+.poster-sheet h1 { font-size: 13mm; line-height: 1.05; margin: 8mm 0 4mm; overflow-wrap: anywhere; color: #15130f; font-family: inherit; font-weight: 900; }
+.poster-sheet .photo { margin: 0 auto 6mm; max-width: 100%; max-height: 95mm; border: 2px solid #15130f; }
+.poster-sheet .photo-emoji { font-size: 40mm; line-height: 1; margin: 0 0 6mm; }
+.poster-sheet .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin: 2mm 0 6mm; text-align: left; }
+.poster-sheet .facts div { border: 2px solid #15130f; padding: 3mm 4mm; }
+.poster-sheet .facts span { display: block; font-size: 3.2mm; text-transform: uppercase; letter-spacing: 0.08em; color: #555; }
+.poster-sheet .facts strong { font-size: 5.2mm; overflow-wrap: anywhere; }
+.poster-sheet .description { font-size: 5mm; line-height: 1.4; margin: 0 0 6mm; overflow-wrap: anywhere; }
+.poster-sheet .reward { font-size: 9mm; font-weight: 900; margin: 0 0 6mm; padding: 3mm; background: #ffd23f; border: 2px solid #15130f; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.poster-sheet .contact { margin-top: auto; border-top: 3px dashed #15130f; padding-top: 6mm; }
+.poster-sheet .contact p { margin: 0 0 2mm; font-size: 5mm; }
+.poster-sheet .contact .phone { font-size: 13mm; font-weight: 900; letter-spacing: 0.02em; }
+.poster-sheet .contact small { display: block; font-size: 3.6mm; color: #444; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+    .poster-page { padding: 12px; }
+    .poster-sheet { min-height: 0; padding: 6mm; }
+    .poster-sheet .banner { font-size: 18mm; }
+    .poster-sheet h1 { font-size: 9mm; }
+}
+@page { size: A4; margin: 8mm; }
+@media print {
+    body.poster-mode { background: #fff; }
+    .poster-page { padding: 0; }
+    .poster-page .toolbar, .lostly-toasts { display: none; }
+    .poster-sheet { border: 0; max-width: none; min-height: 0; height: 277mm; padding: 6mm; }
+}

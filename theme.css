@@ -1,0 +1,384 @@
+/* =====================================================================
+   Lostly — colour themes
+   Every colour on the site comes from these tokens. Each palette sets a
+   light and a dark version; components never use raw hex values.
+   ===================================================================== */
+
+:root {
+    --radius: 20px;
+    --radius-md: 14px;
+    --radius-sm: 12px;
+    --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --font-display: "Poppins", "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --shadow-xs: 0 1px 2px rgba(20, 16, 12, 0.05);
+    --shadow-sm: 0 2px 6px -1px rgba(20, 16, 12, 0.07), 0 1px 2px rgba(20, 16, 12, 0.04);
+    --shadow-md: 0 14px 30px -12px rgba(20, 16, 12, 0.18), 0 3px 8px -3px rgba(20, 16, 12, 0.06);
+    --shadow-lg: 0 30px 60px -18px rgba(20, 16, 12, 0.30);
+    --on-status: #ffffff;
+
+    /* legacy names used by the base stylesheet */
+    --brand-600: var(--primary);
+    --brand-hover: var(--primary-hover);
+    --on-brand: var(--on-primary);
+}
+
+:root[data-bs-theme="dark"] {
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.45);
+    --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.45);
+    --shadow-md: 0 14px 30px -12px rgba(0, 0, 0, 0.7);
+    --shadow-lg: 0 30px 60px -18px rgba(0, 0, 0, 0.8);
+    --on-status: #0f0d0b;
+    color-scheme: dark;
+}
+
+/* ---------- 1. Stone & Mocha (default) ----------
+   Calm warm-grey canvas, mocha brown as the single brand colour, caramel
+   highlights. Lost = clear red, Found = green, so status reads instantly. */
+:root {
+    --bg: #f7f5f2;
+    --surface: #ffffff;
+    --surface-2: #f4f1ed;
+    --surface-3: #e9e4dd;
+    --ink: #1c1917;
+    --ink-2: #44403c;
+    --muted: #78716c;
+    --line: #e8e3dc;
+    --line-2: #d7d0c7;
+
+    --brand: #6B4A2E;
+    --brand-soft: #f3ece4;
+    --brand-ink: #4a3220;
+    --primary: #6B4A2E;
+    --primary-2: #573b23;
+    --primary-hover: #3A2418;
+    --on-primary: #ffffff;
+    --accent: #A88462;
+    --accent-ink: #86603c;
+    --accent-soft: #f5ede3;
+    --glow: rgba(168, 132, 98, 0.28);
+
+    --dark-1: #1c1917;
+    --dark-2: #2a2420;
+    --dark-3: #3d322b;
+    --on-dark: #fafaf9;
+    --on-dark-2: #d6d3d1;
+    --on-dark-3: #a8a29e;
+    --dark-accent: #d9b993;
+    --dark-btn: #D5C4AE;
+    --dark-btn-ink: #1c1917;
+
+    --lost: #d64536;
+    --lost-600: #b93427;
+    --lost-soft: #fdecea;
+    --lost-ink: #ae2a1e;
+    --found: #178a5f;
+    --found-600: #11734e;
+    --found-soft: #e3f4ec;
+    --found-ink: #0d6845;
+    --amber-soft: #fdf2e1;
+    --amber-ink: #95570b;
+    --neutral: #57534e;
+
+    --media-lost: linear-gradient(160deg, #fdf1ef 0%, #f6efe9 100%);
+    --media-found: linear-gradient(160deg, #e9f5ef 0%, #f0f1eb 100%);
+    --dots: rgba(28, 25, 23, 0.07);
+
+    --pill-1: #1c1917;
+    --pill-2: #3A2418;
+    --pill-3: #6B4A2E;
+    --pill-4: #A88462;
+    --pill-5: #D5C4AE;
+    --logo-1: #c49a6c;
+    --logo-2: #6B4A2E;
+    --logo-3: #3A2418;
+    --hero-glow-1: rgba(168, 132, 98, 0.20);
+    --hero-glow-2: rgba(213, 196, 174, 0.45);
+    --ring: 0 0 0 4px rgba(168, 132, 98, 0.25);
+}
+:root[data-bs-theme="dark"] {
+    --bg: #12100e;
+    --surface: #1c1917;
+    --surface-2: #24201d;
+    --surface-3: #302a26;
+    --ink: #fafaf9;
+    --ink-2: #e7e5e4;
+    --muted: #a8a29e;
+    --line: #2f2a26;
+    --line-2: #45403b;
+
+    --brand: #dcc7ad;
+    --brand-soft: rgba(213, 196, 174, 0.12);
+    --brand-ink: #f0e4d4;
+    --primary: #D5C4AE;
+    --primary-2: #c2ad92;
+    --primary-hover: #efe5d8;
+    --on-primary: #1c1917;
+    --accent: #c9a27d;
+    --accent-ink: #dcbf9f;
+    --accent-soft: rgba(201, 162, 125, 0.14);
+    --glow: rgba(201, 162, 125, 0.22);
+
+    --dark-1: #0c0a09;
+    --dark-2: #1c1917;
+    --dark-3: #2c2520;
+
+    --lost: #f06e5e;
+    --lost-600: #e15747;
+    --lost-soft: rgba(240, 110, 94, 0.14);
+    --lost-ink: #ffa395;
+    --found: #3cc28e;
+    --found-600: #2aa877;
+    --found-soft: rgba(60, 194, 142, 0.14);
+    --found-ink: #82dcb8;
+    --amber-soft: rgba(234, 170, 80, 0.14);
+    --amber-ink: #f2c37e;
+    --neutral: #d6d3d1;
+
+    --media-lost: linear-gradient(160deg, #2b1e1b 0%, #211c19 100%);
+    --media-found: linear-gradient(160deg, #182720 0%, #1e1c19 100%);
+    --dots: rgba(255, 255, 255, 0.05);
+    --hero-glow-1: rgba(201, 162, 125, 0.16);
+    --hero-glow-2: rgba(107, 74, 46, 0.25);
+    --ring: 0 0 0 4px rgba(201, 162, 125, 0.3);
+}
+
+/* ---------- 2. Mocha & Teal ----------
+   Cream and espresso from the palette, deep teal for actions, copper
+   highlights. Teal and copper are opposites, so the page has real contrast. */
+:root[data-palette="teal"] {
+    --bg: #f6f1ea;
+    --surface: #fffdfa;
+    --surface-2: #f8f3ec;
+    --surface-3: #ece3d7;
+    --ink: #1A120E;
+    --ink-2: #3A2418;
+    --muted: #6f6157;
+    --line: #ebe2d6;
+    --line-2: #d9cbb9;
+
+    --brand: #0f5f5a;
+    --brand-soft: #e2f0ee;
+    --brand-ink: #0b4643;
+    --primary: #11615c;
+    --primary-2: #0c4c48;
+    --primary-hover: #093a37;
+    --on-primary: #ffffff;
+    --accent: #c8834f;
+    --accent-ink: #a5642f;
+    --accent-soft: #f8ebdf;
+    --glow: rgba(200, 131, 79, 0.30);
+
+    --dark-1: #0b2624;
+    --dark-2: #103a37;
+    --dark-3: #17504b;
+    --on-dark: #fbf7f1;
+    --on-dark-2: #d3e3e0;
+    --on-dark-3: #9fbdb9;
+    --dark-accent: #eeb07e;
+    --dark-btn: #f6f1ea;
+    --dark-btn-ink: #0b2624;
+
+    --lost: #c8501c;
+    --lost-600: #a9410f;
+    --lost-soft: #fdeee4;
+    --lost-ink: #9a3410;
+    --found: #0f766e;
+    --found-600: #0b5f59;
+    --found-soft: #e0f2f0;
+    --found-ink: #0b5953;
+    --amber-soft: #fbf0df;
+    --amber-ink: #8f5b12;
+    --neutral: #4A4A46;
+
+    --media-lost: linear-gradient(160deg, #fdf0e7 0%, #f6ebe0 100%);
+    --media-found: linear-gradient(160deg, #e4f2f0 0%, #eef0ea 100%);
+    --dots: rgba(58, 36, 24, 0.08);
+
+    --pill-1: #0b2624;
+    --pill-2: #11615c;
+    --pill-3: #6B4A2E;
+    --pill-4: #c8834f;
+    --pill-5: #e6d6c0;
+    --logo-1: #2f9a91;
+    --logo-2: #11615c;
+    --logo-3: #0b2624;
+    --hero-glow-1: rgba(17, 97, 92, 0.14);
+    --hero-glow-2: rgba(200, 131, 79, 0.22);
+    --ring: 0 0 0 4px rgba(17, 97, 92, 0.2);
+}
+:root[data-palette="teal"][data-bs-theme="dark"] {
+    --bg: #0b1514;
+    --surface: #111f1e;
+    --surface-2: #172928;
+    --surface-3: #1f3735;
+    --ink: #f4efe8;
+    --ink-2: #dbe3e1;
+    --muted: #94a9a6;
+    --line: #1e3230;
+    --line-2: #2c4643;
+
+    --brand: #6fd0c5;
+    --brand-soft: rgba(111, 208, 197, 0.12);
+    --brand-ink: #b6ece5;
+    --primary: #5cc3b8;
+    --primary-2: #47aba1;
+    --primary-hover: #8ee0d6;
+    --on-primary: #0b1514;
+    --accent: #eea56c;
+    --accent-ink: #f3bf94;
+    --accent-soft: rgba(238, 165, 108, 0.14);
+    --glow: rgba(238, 165, 108, 0.18);
+
+    --dark-1: #061110;
+    --dark-2: #0d2422;
+    --dark-3: #133532;
+
+    --lost: #f28a57;
+    --lost-600: #e37440;
+    --lost-soft: rgba(242, 138, 87, 0.14);
+    --lost-ink: #f9b48f;
+    --found: #4fd1c1;
+    --found-600: #34b8a8;
+    --found-soft: rgba(79, 209, 193, 0.14);
+    --found-ink: #93e6dc;
+    --amber-soft: rgba(238, 165, 108, 0.14);
+    --amber-ink: #f3c493;
+    --neutral: #dbe3e1;
+
+    --media-lost: linear-gradient(160deg, #2a1f19 0%, #142120 100%);
+    --media-found: linear-gradient(160deg, #10302d 0%, #13201f 100%);
+    --dots: rgba(255, 255, 255, 0.05);
+    --hero-glow-1: rgba(92, 195, 184, 0.10);
+    --hero-glow-2: rgba(238, 165, 108, 0.12);
+    --ring: 0 0 0 4px rgba(92, 195, 184, 0.28);
+}
+
+/* ---------- 3. Espresso & Gold ----------
+   Ivory canvas, espresso buttons and blocks, soft gold highlights,
+   crimson and emerald for status. Classic and luxurious. */
+:root[data-palette="gold"] {
+    --bg: #faf7f2;
+    --surface: #ffffff;
+    --surface-2: #f7f2ea;
+    --surface-3: #ede5d8;
+    --ink: #1A120E;
+    --ink-2: #3a2e26;
+    --muted: #75695e;
+    --line: #ece5da;
+    --line-2: #dccfbd;
+
+    --brand: #7c5e1c;
+    --brand-soft: #f7efdd;
+    --brand-ink: #5c4510;
+    --primary: #2a1d16;
+    --primary-2: #1A120E;
+    --primary-hover: #3A2418;
+    --on-primary: #fbf3e0;
+    --accent: #c79c45;
+    --accent-ink: #8f6b1d;
+    --accent-soft: #f8efda;
+    --glow: rgba(199, 156, 69, 0.30);
+
+    --dark-1: #1A120E;
+    --dark-2: #271b15;
+    --dark-3: #3A2418;
+    --on-dark: #fbf3e0;
+    --on-dark-2: #ddd0b9;
+    --on-dark-3: #a99a82;
+    --dark-accent: #e3c27a;
+    --dark-btn: #d9b45f;
+    --dark-btn-ink: #1A120E;
+
+    --lost: #b8392d;
+    --lost-600: #9c2e23;
+    --lost-soft: #f9e8e5;
+    --lost-ink: #8f281e;
+    --found: #2e7d5a;
+    --found-600: #246648;
+    --found-soft: #e3f1ea;
+    --found-ink: #205c42;
+    --amber-soft: #f8efda;
+    --amber-ink: #7c5e1c;
+    --neutral: #4A4A46;
+
+    --media-lost: linear-gradient(160deg, #fbefec 0%, #f5eee6 100%);
+    --media-found: linear-gradient(160deg, #e9f3ed 0%, #f2efe7 100%);
+    --dots: rgba(58, 36, 24, 0.07);
+
+    --pill-1: #1A120E;
+    --pill-2: #3A2418;
+    --pill-3: #6B4A2E;
+    --pill-4: #c79c45;
+    --pill-5: #ede0c4;
+    --logo-1: #e3c27a;
+    --logo-2: #b5893a;
+    --logo-3: #6B4A2E;
+    --hero-glow-1: rgba(199, 156, 69, 0.20);
+    --hero-glow-2: rgba(237, 224, 196, 0.6);
+    --ring: 0 0 0 4px rgba(199, 156, 69, 0.28);
+}
+:root[data-palette="gold"][data-bs-theme="dark"] {
+    --bg: #100b08;
+    --surface: #1a1310;
+    --surface-2: #231a15;
+    --surface-3: #31251d;
+    --ink: #f8f0e2;
+    --ink-2: #e0d3bf;
+    --muted: #a99b88;
+    --line: #2e231c;
+    --line-2: #46362a;
+
+    --brand: #e3c27a;
+    --brand-soft: rgba(227, 194, 122, 0.12);
+    --brand-ink: #f2dca6;
+    --primary: #e0bd6e;
+    --primary-2: #c9a14f;
+    --primary-hover: #f0d696;
+    --on-primary: #1A120E;
+    --accent: #e3c27a;
+    --accent-ink: #edd59c;
+    --accent-soft: rgba(227, 194, 122, 0.13);
+    --glow: rgba(227, 194, 122, 0.16);
+
+    --dark-1: #0a0705;
+    --dark-2: #1A120E;
+    --dark-3: #2a1d16;
+
+    --lost: #ea6b5c;
+    --lost-600: #d85446;
+    --lost-soft: rgba(234, 107, 92, 0.14);
+    --lost-ink: #f6a196;
+    --found: #4fbf8b;
+    --found-600: #3aa776;
+    --found-soft: rgba(79, 191, 139, 0.14);
+    --found-ink: #93dcb8;
+    --amber-soft: rgba(227, 194, 122, 0.13);
+    --amber-ink: #edd59c;
+    --neutral: #e0d3bf;
+
+    --media-lost: linear-gradient(160deg, #2b1c17 0%, #1f1712 100%);
+    --media-found: linear-gradient(160deg, #182a20 0%, #1d1712 100%);
+    --dots: rgba(255, 255, 255, 0.05);
+    --hero-glow-1: rgba(227, 194, 122, 0.10);
+    --hero-glow-2: rgba(107, 74, 46, 0.25);
+    --ring: 0 0 0 4px rgba(227, 194, 122, 0.25);
+}
+
+/* hand the tokens to Bootstrap */
+:root, :root[data-bs-theme="light"], :root[data-bs-theme="dark"] {
+    --bs-body-bg: var(--bg);
+    --bs-body-color: var(--ink-2);
+    --bs-body-font-family: var(--font);
+    --bs-body-font-size: 0.9375rem;
+    --bs-body-line-height: 1.6;
+    --bs-secondary-color: var(--muted);
+    --bs-border-color: var(--line);
+    --bs-border-radius: var(--radius-sm);
+    --bs-heading-color: var(--ink);
+    --bs-emphasis-color: var(--ink);
+    --bs-link-color: var(--brand);
+    --bs-link-hover-color: var(--ink);
+    --bs-tertiary-bg: var(--surface-2);
+}
